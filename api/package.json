@@ -1,12 +1,27 @@
 {
   "name": "nexpress-social-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API app running in Express",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-stage-2": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "file-loader": "^3.0.1",
+    "nodemon": "^1.19.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.5.5",
+    "webpack": "^4.30.0"
+  }
 }
