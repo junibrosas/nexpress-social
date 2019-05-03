@@ -4,7 +4,10 @@ import app from './express';
 
 // Connection URL
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoUri);
+mongoose.connect(config.mongoUri, {
+  useCreateIndex: true,
+  useNewUrlParser: true
+});
 mongoose.connection.on('error', () => {
   throw new Error(`unable to connect to database: ${mongoUri}`);
 });

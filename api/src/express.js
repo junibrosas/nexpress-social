@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import path from 'path';
 
 import postRoutes from './routes/post.routes';
+import userRoutes from './routes/user.routes';
 
 const CURRENT_WORKING_DIR = process.cwd();
 const app = express();
@@ -21,5 +22,6 @@ app.use(cors()); // secure apps by setting various HTTP headers
 app.use(helmet()); // enable CORS - Cross Origin Resource Sharing
 
 app.use('/api', postRoutes);
+app.use('/api', userRoutes);
 
 export default app;
