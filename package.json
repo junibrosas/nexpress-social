@@ -1,0 +1,29 @@
+{
+  "name": "nexpress-social",
+  "version": "1.0.0",
+  "description": "a sample social media application using next.js + express.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bootstrap": "yarn && lerna bootstrap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junibrosas/nextjs-express-socialmedia.git"
+  },
+  "keywords": [
+    "nextjs",
+    "express",
+    "react",
+    "ssr"
+  ],
+  "author": "Juni Brosas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junibrosas/nextjs-express-socialmedia/issues"
+  },
+  "homepage": "https://github.com/junibrosas/nextjs-express-socialmedia#readme",
+  "dependencies": {
+    "lerna": "^3.13.4"
+  }
+}
