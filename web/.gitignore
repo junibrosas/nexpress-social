@@ -1,0 +1,6 @@
+#dependencies
+node_modules/
+
+#misc
+.next
+yarn-error.log*
