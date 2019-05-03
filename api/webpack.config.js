@@ -11,6 +11,7 @@ const config = {
     publicPath: '/dist/',
     libraryTarget: 'commonjs2'
   },
+  target: 'node',
   externals: [nodeExternals()], // to exclude node_modules when bundling the server
   module: {
     rules: [
