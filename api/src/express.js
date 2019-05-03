@@ -8,6 +8,7 @@ import path from 'path';
 
 import postRoutes from './routes/post.routes';
 import userRoutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
 
 const CURRENT_WORKING_DIR = process.cwd();
 const app = express();
@@ -23,5 +24,6 @@ app.use(helmet()); // enable CORS - Cross Origin Resource Sharing
 
 app.use('/api', postRoutes);
 app.use('/api', userRoutes);
+app.use('/api', authRoutes);
 
 export default app;
