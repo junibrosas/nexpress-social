@@ -3,8 +3,6 @@ import getConfig from 'next/config';
 const { publicRuntimeConfig } = getConfig();
 const endpoint = publicRuntimeConfig.api.endpoint;
 
-console.log(getConfig());
-
 class ApiService {
   create = (user) => {
     return fetch(`${endpoint}/api/users/`, {

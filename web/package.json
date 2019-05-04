@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/next": "^8.0.5",
     "@types/react": "^16.8.16",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",

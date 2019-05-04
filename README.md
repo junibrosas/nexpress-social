@@ -1,8 +1,6 @@
 # nexpress-social
 A sample Social Media App using Next.JS &amp; Express.JS
 
-## Prerequisite
-
 ## How to run this code
 1. Make sure MongoDB is running on your system.
 2. Clone this repository.
