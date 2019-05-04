@@ -15,6 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 
 import { UserApiService } from 'src/services/userapi.service';
+import { Page } from 'src/components/Page';
 
 interface IProps {
   classes: any;
@@ -70,41 +71,43 @@ class Signup extends React.Component<IProps, IState> {
   render() {
     const { classes } = this.props;
 
-    return <React.Fragment>
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography variant="headline" component="h2" className={classes.title}>
-            Sign Up
+    return (
+      <Page>
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="headline" component="h2" className={classes.title}>
+              Sign Up
           </Typography>
-          <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal" /><br />
-          <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
-          <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
-          <br /> {
-            this.state.error && (<Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>error</Icon>
-              {this.state.error}</Typography>)
-          }
-        </CardContent>
-        <CardActions>
-          <Button color="primary" variant="contained" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
-        </CardActions>
-      </Card>
-      <Dialog open={this.state.open} disableBackdropClick={true}>
-        <DialogTitle>New Account</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            New account successfully created.
+            <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal" /><br />
+            <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
+            <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
+            <br /> {
+              this.state.error && (<Typography component="p" color="error">
+                <Icon color="error" className={classes.error}>error</Icon>
+                {this.state.error}</Typography>)
+            }
+          </CardContent>
+          <CardActions>
+            <Button color="primary" variant="contained" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
+          </CardActions>
+        </Card>
+        <Dialog open={this.state.open} disableBackdropClick={true}>
+          <DialogTitle>New Account</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              New account successfully created.
           </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Link href="/signin">
-            <Button color="primary" autoFocus={true} variant="contained">
-              Sign In
+          </DialogContent>
+          <DialogActions>
+            <Link href="/signin">
+              <Button color="primary" autoFocus={true} variant="contained">
+                Sign In
             </Button>
-          </Link>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+            </Link>
+          </DialogActions>
+        </Dialog>
+      </Page>
+    )
   }
 
   handleChange = name => event => {

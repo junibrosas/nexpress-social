@@ -11,6 +11,7 @@ import { withStyles } from '@material-ui/core';
 
 import { AuthApiService } from 'src/services/authapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
+import { Page } from 'src/components/Page';
 
 interface IState {
   email: string;
@@ -72,28 +73,28 @@ class Signin extends React.Component<IProps, IState> {
     }
 
     return (
-      <Card className={classes.card}>
-        <CardContent>
-          <Typography variant="headline" component="h2" className={classes.title}>
-            Sign In
+      <Page>
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography variant="headline" component="h2" className={classes.title}>
+              Sign In
           </Typography>
-          <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
-          <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
-          <br /> {
-            this.state.error && (<Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>error</Icon>
-              {this.state.error}
-            </Typography>)
-          }
-        </CardContent>
-        <CardActions>
-          <Button color="primary" variant="contained" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
-        </CardActions>
-      </Card>
+            <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
+            <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
+            <br /> {
+              this.state.error && (<Typography component="p" color="error">
+                <Icon color="error" className={classes.error}>error</Icon>
+                {this.state.error}
+              </Typography>)
+            }
+          </CardContent>
+          <CardActions>
+            <Button color="primary" variant="contained" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
+          </CardActions>
+        </Card>
+      </Page>
     )
   }
-
-  
 
   clickSubmit = () => {
     const user = {
