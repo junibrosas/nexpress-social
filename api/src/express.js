@@ -15,12 +15,11 @@ const app = express();
 
 // Configs
 const corsConfig = {
-  'allowedHeaders': ['sessionId', 'Content-Type', 'Authorization', 'Accept'],
-  'exposedHeaders': ['sessionId'],
+  'allowedHeaders': ['Content-Type', 'Authorization', 'Accept'],
   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTION',
   'credentials': true,
   'preflightContinue': false,
-  'origin': ['http://localhost:3000']
+  'origin': ['http://localhost:3000'] // specify urls to whitelist
 }
 
 app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));

@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { withStyles } from '@material-ui/core/styles';
-import Link from 'next/link';
+import Router from 'next/router';
 
 import { UserApiService } from 'src/services/userapi.service';
 import { Page } from 'src/components/common/Page';
@@ -99,11 +99,9 @@ class Signup extends React.Component<IProps, IState> {
           </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Link href="/signin">
-              <Button color="primary" autoFocus={true} variant="contained">
-                  Sign In
+              <Button color="primary" autoFocus={true} variant="contained" onClick={this.handleSignIn}>
+                Sign In
               </Button>
-            </Link>
           </DialogActions>
         </Dialog>
       </Page>
@@ -112,6 +110,10 @@ class Signup extends React.Component<IProps, IState> {
 
   handleChange = name => event => {
     this.setState(({ [name]: event.target.value } as any));
+  }
+
+  handleSignIn = () => {
+    Router.push('/');
   }
 
   clickSubmit = () => {
