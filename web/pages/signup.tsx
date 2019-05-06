@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 
 import { UserApiService } from 'src/services/userapi.service';
-import { Page } from 'src/components/Page';
+import { Page } from 'src/components/common/Page';
 
 interface IProps {
   classes: any;

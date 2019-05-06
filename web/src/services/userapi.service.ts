@@ -17,6 +17,10 @@ class ApiService {
         return response.json()
       }).catch((err) => console.log(err))
   }
+
+  getPhotoUrl = (userId) => {
+    return `${endpoint}/users/photo/${userId}`;
+  }
 }
 
 

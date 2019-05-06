@@ -11,7 +11,7 @@ import { withStyles } from '@material-ui/core';
 
 import { AuthApiService } from 'src/services/authapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
-import { Page } from 'src/components/Page';
+import { Page } from 'src/components/common/Page';
 
 interface IState {
   email: string;
@@ -76,7 +76,7 @@ class Signin extends React.Component<IProps, IState> {
       <Page>
         <Card className={classes.card}>
           <CardContent>
-            <Typography variant="headline" component="h2" className={classes.title}>
+            <Typography variant="h4" className={classes.title}>
               Sign In
           </Typography>
             <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />

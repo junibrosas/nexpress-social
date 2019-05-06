@@ -8,7 +8,7 @@ import getPageContext from '../src/getPageContext';
 
 class MyApp extends App {
   pageContext: any;
-  
+
   constructor(props) {
     super(props);
     this.pageContext = getPageContext();
@@ -27,7 +27,7 @@ class MyApp extends App {
     return (
       <Container>
         <Head>
-          <title>My page</title>
+          <title>Nexpress</title>
         </Head>
         {/* Wrap every page in Jss and Theme providers */}
         <JssProvider

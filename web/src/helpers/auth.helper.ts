@@ -1,4 +1,4 @@
-import { AuthApiService } from './../services/authapi.service';
+import { AuthApiService } from 'src/services/authapi.service';
 
 class Helper {
   isAuthenticated = () => {

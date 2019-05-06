@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Card, CardContent, CardMedia, withStyles, Typography, Grid } from '@material-ui/core';
 import { AuthHelper } from 'src/helpers/auth.helper';
-import { Page } from 'src/components/Page';
+import { Page } from 'src/components/common/Page';
+import { NewsFeed } from 'src/components/post/NewsFeed';
 
 interface IProps {
   classes: any;
@@ -62,7 +63,13 @@ class Home extends Component<IProps, IState> {
               </Grid>
             </Grid>
           }
-          
+          {!this.state.defaultPage &&
+            <Grid container spacing={24}>
+              <Grid item xs={8} sm={7}>
+                <NewsFeed />
+              </Grid>
+            </Grid>
+          }
         </div>
       </Page>
     )

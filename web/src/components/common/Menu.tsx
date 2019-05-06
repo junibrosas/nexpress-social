@@ -20,7 +20,7 @@ const MenuComponent = (props) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="title" color="inherit">
+        <Typography variant="h4" color="inherit">
           MERN Social
         </Typography>
         <Link href="/">
