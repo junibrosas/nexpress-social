@@ -3,6 +3,7 @@ import { Card, CardContent, CardMedia, withStyles, Typography, Grid } from '@mat
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { Page } from 'src/components/common/Page';
 import { NewsFeed } from 'src/components/post/NewsFeed';
+import { FindPeople } from 'src/components/user/FindPeople';
 
 interface IProps {
   classes: any;
@@ -67,6 +68,9 @@ class Home extends Component<IProps, IState> {
             <Grid container spacing={24}>
               <Grid item xs={8} sm={7}>
                 <NewsFeed />
+              </Grid>
+              <Grid item xs={6} sm={5}>
+                <FindPeople />
               </Grid>
             </Grid>
           }
