@@ -21,7 +21,7 @@ class ApiService {
 
   listNewsFeed = (params, credentials) => {
     return fetch(`${endpoint}/posts/feed/${params.userId}`, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -109,6 +109,10 @@ class ApiService {
     }).catch((err) => {
       console.log(err)
     })
+  }
+
+  getPhotoUrl = (photoId) => {
+    return `${endpoint}/posts/photo/${photoId}`;
   }
 } 
 

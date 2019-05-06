@@ -5,7 +5,7 @@ const endpoint = publicRuntimeConfig.api.endpoint;
 
 class ApiService {
   create = (user) => {
-    return fetch(`${endpoint}/api/users/`, {
+    return fetch(`${endpoint}/users/`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

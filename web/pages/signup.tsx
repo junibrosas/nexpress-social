@@ -75,9 +75,9 @@ class Signup extends React.Component<IProps, IState> {
       <Page>
         <Card className={classes.card}>
           <CardContent>
-            <Typography variant="headline" component="h2" className={classes.title}>
+            <Typography variant="h2" className={classes.title}>
               Sign Up
-          </Typography>
+            </Typography>
             <TextField id="name" label="Name" className={classes.textField} value={this.state.name} onChange={this.handleChange('name')} margin="normal" /><br />
             <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
             <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
@@ -101,8 +101,8 @@ class Signup extends React.Component<IProps, IState> {
           <DialogActions>
             <Link href="/signin">
               <Button color="primary" autoFocus={true} variant="contained">
-                Sign In
-            </Button>
+                  Sign In
+              </Button>
             </Link>
           </DialogActions>
         </Dialog>

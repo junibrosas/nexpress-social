@@ -21,7 +21,7 @@ const MenuComponent = (props) => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h4" color="inherit">
-          MERN Social
+          Nexpress
         </Typography>
         <Link href="/">
           <IconButton aria-label="Home" style={isActive("/")}>
@@ -31,12 +31,10 @@ const MenuComponent = (props) => {
         {
           !AuthHelper.isAuthenticated() && (<span>
             <Link href="/signup">
-              <Button style={isActive("/signup")}>Sign up
-                </Button>
+              <Button style={isActive("/signup")}>Sign up</Button>
             </Link>
             <Link href="/signin">
-              <Button style={isActive("/signin")}>Sign In
-                </Button>
+              <Button style={isActive("/signin")}>Sign In</Button>
             </Link>
           </span>)
         }

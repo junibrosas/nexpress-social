@@ -11,7 +11,7 @@ const nextConfig = {
   pageExtensions: ['jsx', 'js', 'tsx', 'ts'],
   publicRuntimeConfig: {
     api: {
-      endpoint: domain
+      endpoint: `${domain}/api`
     }
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

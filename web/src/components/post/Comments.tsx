@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { PostApiService } from 'src/services/postapi.service';
 import { withStyles } from '@material-ui/core';
+import { UserApiService } from 'src/services/userapi.service';
 
 interface IProps {
   classes: any;
@@ -73,7 +74,7 @@ class CommentsComponent extends React.Component<IProps, IState> {
       <div>
         <CardHeader
           avatar={
-            <Avatar className={classes.smallAvatar} src={'/api/users/photo/'+AuthHelper.isAuthenticated().user._id}/>
+            <Avatar className={classes.smallAvatar} src={UserApiService.getPhotoUrl(AuthHelper.isAuthenticated().user._id)} />
           }
           title={ <TextField
             onKeyDown={this.addComment}
@@ -90,7 +91,7 @@ class CommentsComponent extends React.Component<IProps, IState> {
             return (
               <CardHeader
                 avatar={
-                  <Avatar className={classes.smallAvatar} src={'/api/users/photo/'+item.postedBy._id}/>
+                  <Avatar className={classes.smallAvatar} src={UserApiService.getPhotoUrl(item.postedBy._id)} />
                 }
                 title={commentBody(item)}
                 className={classes.cardHeader}

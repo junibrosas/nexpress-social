@@ -50,7 +50,7 @@ class Home extends Component<IProps, IState> {
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <Card className={classes.card}>
-                  <Typography variant="headline" component="h2" className={classes.title}>
+                  <Typography variant="h2" className={classes.title}>
                     Home Page
                 </Typography>
                   <CardMedia className={classes.media} image={"/static/images/seashell.jpg"} title="Unicorn Shells" />

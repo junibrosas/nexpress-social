@@ -110,7 +110,7 @@ class NewPostComponent extends React.Component<IProps, IState> {
           )}
         </CardContent>
         <CardActions>
-          <Button color="primary" variant="raised" disabled={this.state.text === ''} onClick={this.clickPost} className={classes.submit}>POST</Button>
+          <Button color="primary" variant="contained" disabled={this.state.text === ''} onClick={this.clickPost} className={classes.submit}>POST</Button>
         </CardActions>
       </Card>
     </div>

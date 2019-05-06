@@ -42,7 +42,7 @@ class NewsFeedComponent extends React.Component<IProps, IState> {
     const {classes} = this.props
     return (
       <Card className={classes.card}>
-        <Typography variant="title" className={classes.title}>
+        <Typography variant="h6" className={classes.title}>
           Newsfeed
         </Typography>
         <Divider/>

@@ -19,6 +19,7 @@ import Link from 'next/link';
 
 import { Comments } from 'src/components/post/Comments';
 import { PostApiService } from 'src/services/postapi.service';
+import { UserApiService } from 'src/services/userapi.service';
 
 interface IProps {
   classes: any;
@@ -126,18 +127,18 @@ class PostComponent extends React.Component<IProps, IState> {
     return (
       <Card className={classes.card}>
         <CardHeader
-            avatar={
-              <Avatar src={'/api/users/photo/'+this.props.post.postedBy._id}/>
-            }
-            action={this.props.post.postedBy._id === AuthHelper.isAuthenticated().user._id &&
-              <IconButton onClick={this.deletePost}>
-                <DeleteIcon />
-              </IconButton>
-            }
-            title={<Link href={"/user/" + this.props.post.postedBy._id}>{this.props.post.postedBy.name}</Link>}
-            subheader={(new Date(this.props.post.created)).toDateString()}
-            className={classes.cardHeader}
-          />
+          avatar={
+            <Avatar src={UserApiService.getPhotoUrl(this.props.post.postedBy._id)}/>
+          }
+          action={this.props.post.postedBy._id === AuthHelper.isAuthenticated().user._id &&
+            <IconButton onClick={this.deletePost}>
+              <DeleteIcon />
+            </IconButton>
+          }
+          title={<Link href={"/user/" + this.props.post.postedBy._id}><a>{this.props.post.postedBy.name}</a></Link>}
+          subheader={(new Date(this.props.post.created)).toDateString()}
+          className={classes.cardHeader}
+        />
         <CardContent className={classes.cardContent}>
           <Typography component="p" className={classes.text}>
             {this.props.post.text}
@@ -146,7 +147,7 @@ class PostComponent extends React.Component<IProps, IState> {
             (<div className={classes.photo}>
               <img
                 className={classes.media}
-                src={'/api/posts/photo/'+this.props.post._id}
+                src={PostApiService.getPhotoUrl(this.props.post._id)}
                 />
             </div>)}
         </CardContent>
