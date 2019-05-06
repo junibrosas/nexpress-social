@@ -40,8 +40,8 @@ const MenuComponent = (props) => {
         }
         {
           AuthHelper.isAuthenticated() && (<span>
-            <Link href={"/user/" + AuthHelper.isAuthenticated().user._id}>
-              <Button style={isActive("/user/" + AuthHelper.isAuthenticated().user._id)}>My Profile</Button>
+            <Link href={"/profile/" + AuthHelper.isAuthenticated().user._id}>
+              <Button style={isActive("/profile/" + AuthHelper.isAuthenticated().user._id)}>My Profile</Button>
             </Link>
             <Button color="inherit" onClick={() => {
               AuthHelper.signout(() => Router.push('/'))

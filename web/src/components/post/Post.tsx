@@ -96,7 +96,7 @@ class PostComponent extends React.Component<IProps, IState> {
     }, {
       t: jwt.token
     }, this.props.post._id).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.setState({like: !this.state.like, likes: data.likes.length})
@@ -115,7 +115,7 @@ class PostComponent extends React.Component<IProps, IState> {
     }, {
       t: jwt.token
     }).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.props.onRemove(this.props.post)
@@ -135,7 +135,7 @@ class PostComponent extends React.Component<IProps, IState> {
               <DeleteIcon />
             </IconButton>
           }
-          title={<Link href={"/user/" + this.props.post.postedBy._id}><a>{this.props.post.postedBy.name}</a></Link>}
+          title={<Link href={"/profile/" + this.props.post.postedBy._id}><a>{this.props.post.postedBy.name}</a></Link>}
           subheader={(new Date(this.props.post.created)).toDateString()}
           className={classes.cardHeader}
         />

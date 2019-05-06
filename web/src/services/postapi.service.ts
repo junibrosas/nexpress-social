@@ -32,6 +32,19 @@ class ApiService {
     }).catch((err) => console.log(err))
   }
 
+  listByUser = (params, credentials) => {
+    return fetch(`${endpoint}/posts/by/${params.userId}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }
+    }).then(response => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
   remove = (params, credentials) => {
     return fetch(`${endpoint}/posts/${params.userId}`, {
       method: 'DELETE',

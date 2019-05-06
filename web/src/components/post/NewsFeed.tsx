@@ -64,7 +64,7 @@ class NewsFeedComponent extends React.Component<IProps, IState> {
       { userId: jwt.user._id },
       { t: jwt.token }
     ).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error);
       } else {
         this.setState({ posts: data });

@@ -59,7 +59,7 @@ class CommentsComponent extends React.Component<IProps, IState> {
     const commentBody = item => {
       return (
         <p className={classes.commentText}>
-          <Link href={"/user/" + item.postedBy._id}>{item.postedBy.name}</Link><br/>
+          <Link href={"/profile/" + item.postedBy._id}>{item.postedBy.name}</Link><br/>
           {item.text}
           <span className={classes.commentDate}>
             {(new Date(item.created)).toDateString()} |
@@ -116,7 +116,7 @@ class CommentsComponent extends React.Component<IProps, IState> {
       }, {
         t: jwt.token
       }, this.props.postId, {text: this.state.text}).then((data) => {
-        if (data.error) {
+        if (data && data.error) {
           console.log(data.error)
         } else {
           this.setState({text: ''})
@@ -133,7 +133,7 @@ class CommentsComponent extends React.Component<IProps, IState> {
     }, {
       t: jwt.token
     }, this.props.postId, comment).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error)
       } else {
         this.props.updateComments(data.comments)

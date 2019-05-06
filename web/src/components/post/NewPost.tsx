@@ -135,7 +135,7 @@ class NewPostComponent extends React.Component<IProps, IState> {
       { userId: jwt.user._id },
       { t: jwt.token},
       this.postData).then((data) => {
-        if (data.error) {
+        if (data && data.error) {
           this.setState({ error: data.error });
         } else {
           this.setState({ text: '', photo: '' });

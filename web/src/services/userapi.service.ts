@@ -17,6 +17,55 @@ class ApiService {
         return response.json()
       }).catch((err) => console.log(err))
   }
+  
+  read = (params, credentials) => {
+    return fetch(`${endpoint}/users/${params.userId}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
+  update = (params, credentials, user) => {
+    return fetch(`${endpoint}/users/${params.userId}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      },
+      body: user
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  remove = (params, credentials) => {
+    return fetch(`${endpoint}/users/${params.userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + credentials.t
+      }
+    }).then((response) => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
+
+  list = () => {
+    return fetch(`${endpoint}/users`, {
+      method: 'GET',
+    }).then(response => {
+      return response.json()
+    }).catch((err) => console.log(err))
+  }
 
   follow = (params, credentials, followId) => {
     return fetch(`${endpoint}/users/follow/`, {
@@ -64,7 +113,11 @@ class ApiService {
   }
 
   getPhotoUrl = (userId) => {
-    return `${endpoint}/users/photo/${userId}`;
+    return `${endpoint}/users/photo/${userId}?${new Date().getTime()}`;
+  }
+
+  getDefaultPhotoUrl = () => {
+    return `${endpoint}/users/defaultphoto`;
   }
 }
 

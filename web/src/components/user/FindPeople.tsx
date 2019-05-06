@@ -59,8 +59,7 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
     this.state = {
       users: [],
       open: false,
-      followMessage: '',
-
+      followMessage: ''
     }
   }
 
@@ -81,7 +80,7 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
                   </ListItemAvatar>
                   <ListItemText primary={item.name}/>
                   <ListItemSecondaryAction className={classes.follow}>
-                    <Link href={"/user/" + item._id}>
+                    <Link as={`/profile/${item._id}`} href={"/profile?userId=" + item._id}>
                       <IconButton color="secondary" className={classes.viewButton}>
                         <ViewIcon/>
                       </IconButton>
@@ -116,7 +115,7 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
       { userId: jwt.user._id },
       { t: jwt.token },
     ).then(data => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error);
       } else {
         this.setState({ users: data });
@@ -132,7 +131,7 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
       { t: jwt.token },
       user._id
     ).then((data) => {
-      if (data.error) {
+      if (data && data.error) {
         console.log(data.error);
       } else {
         let toFollow = this.state.users;
