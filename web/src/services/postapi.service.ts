@@ -9,7 +9,7 @@ class ApiService {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer' + credentials.t
+        'Authorization': 'Bearer ' + credentials.t
       },
       body: post
     }).then((response) => {
