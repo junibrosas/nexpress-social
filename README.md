@@ -6,7 +6,7 @@ The goal is for me to learn new & shiny tools, also, to implement cool stuff I l
 
 ## Tools
 - Next.js - Server-side rendering in React 
-- Lerna - monolithic project structure no more
+- Lerna - managing multiple packages; good for monolithic apps
 
 ## How to run this code
 1. Make sure MongoDB is running on your system.

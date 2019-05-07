@@ -52,12 +52,12 @@ class Home extends Component<IProps, IState> {
               <Grid item xs={12}>
                 <Card className={classes.card}>
                   <Typography variant="h2" className={classes.title}>
-                    Home Page
-                </Typography>
-                  <CardMedia className={classes.media} image={"/static/images/seashell.jpg"} title="Unicorn Shells" />
+                    Get A Social Life
+                  </Typography>
+                  <CardMedia className={classes.media} image={"/static/images/people-connect.jpg"} title="Unicorn Shells" />
                   <CardContent>
                     <Typography variant="body1" component="p">
-                      Welcome to the MERN Social home page.
+                      Nexpress helps you connect and share with the people in your life.
                   </Typography>
                   </CardContent>
                 </Card>
