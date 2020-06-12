@@ -4,9 +4,9 @@
   "description": "a sample social media application using next.js + express.js",
   "main": "index.js",
   "scripts": {
-    "start-ui": "cd web && npm run dev",
-    "start-server": "cd api && npm run dev",
-    "start": "npm-run-all start-ui && start-server",
+    "start-ui": "cd web && yarn dev",
+    "start-server": "cd api && yarn dev",
+    "start": "npm-run-all --parallel start-ui start-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "bootstrap": "yarn && lerna bootstrap"
   },
@@ -20,7 +20,7 @@
     "react",
     "ssr"
   ],
-  "author": "Juni Brosas",
+  "author": "Juni Brosas <https://github.com/junibrosas>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/junibrosas/nextjs-express-socialmedia/issues"

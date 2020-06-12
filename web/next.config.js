@@ -3,14 +3,16 @@ const withCSS = require('@zeit/next-css');
 const withFonts = require('next-fonts');
 const withImages = require('next-images');
 const withPlugins = require('next-compose-plugins');
+const env = require('./config/config');
 
-const API_URL = 'http://localhost:4000';
+console.warn(env.API);
+console.warn('.....');
 
 const nextConfig = {
   pageExtensions: ['jsx', 'js', 'tsx', 'ts'],
   publicRuntimeConfig: {
     api: {
-      endpoint: `${API_URL}/api`,
+      endpoint: `${env.API}/api`,
     },
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
