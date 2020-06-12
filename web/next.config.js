@@ -5,9 +5,6 @@ const withImages = require('next-images');
 const withPlugins = require('next-compose-plugins');
 const env = require('./config/config');
 
-console.warn(env.API);
-console.warn('.....');
-
 const nextConfig = {
   pageExtensions: ['jsx', 'js', 'tsx', 'ts'],
   publicRuntimeConfig: {
