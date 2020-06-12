@@ -65,7 +65,7 @@ class Home extends Component<IProps, IState> {
                   </Typography>
                   <CardMedia
                     className={classes.media}
-                    image={'/static/images/people-connect.jpg'}
+                    image={'/public/images/people-connect.jpg'}
                     title='Unicorn Shells'
                   />
                   <CardContent>
