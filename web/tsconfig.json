@@ -18,10 +18,19 @@
       "dom",
       "es2016"
     ],
-    "exclude": [
-      "node_modules",
-      "out",
-      ".next"
-    ]
-  }
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
