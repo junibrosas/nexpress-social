@@ -8,10 +8,18 @@ A sample Social Media App using Next.JS &amp; Express.JS.
 
 The goal is for me to learn new & shiny tools, also, to implement cool stuff I learned from day job in isolation. Tasks will be provided in the Projects tab so if anyone interested to learn with me, please feel free to hop in.
 
-## Tools
+## It features the following technologies
 
-- Next.js - Server-side rendering in React
-- Lerna - managing multiple packages; good for monolithic apps
+- [React 16](https://github.com/facebook/react)
+- [Lerna](https://lerna.js.org)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Yarn](https://yarnpkg.com/en/)
+- [NextJS](https://nextjs.org/)
+- [Redux](https://redux.js.org/)
+- [Webpack](https://webpack.js.org/)
+- [ExpresJS](http://expressjs.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [MongoDB](https://www.mongodb.com/)
 
 ## How to run this code
 
