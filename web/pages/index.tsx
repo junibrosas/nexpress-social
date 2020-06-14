@@ -28,12 +28,12 @@ const styles = (theme) => ({
   card: {
     maxWidth: 600,
     margin: 'auto',
-    marginTop: theme.spacing.unit * 5,
+    marginTop: theme.spacing(5),
   },
   title: {
-    padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 2.5}px ${
-      theme.spacing.unit * 2
-    }px`,
+    padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(
+      2
+    )}px`,
     color: theme.palette.text.secondary,
   },
   media: {
@@ -57,7 +57,7 @@ class Home extends Component<IProps, IState> {
       <Page>
         <div className={classes.root}>
           {this.state.defaultPage && (
-            <Grid container spacing={24}>
+            <Grid container spacing={4}>
               <Grid item xs={12}>
                 <Card className={classes.card}>
                   <Typography variant='h2' className={classes.title}>
@@ -79,7 +79,7 @@ class Home extends Component<IProps, IState> {
             </Grid>
           )}
           {!this.state.defaultPage && (
-            <Grid container spacing={24}>
+            <Grid container spacing={4}>
               <Grid item xs={8} sm={7}>
                 <NewsFeed />
               </Grid>

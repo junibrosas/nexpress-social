@@ -11,7 +11,7 @@ import {
   Avatar,
   IconButton,
   Typography,
-  withStyles
+  withStyles,
 } from '@material-ui/core';
 import Link from 'next/link';
 import { UserApiService } from 'src/services/userapi.service';
@@ -25,30 +25,30 @@ interface IState {
   users: any;
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: theme.mixins.gutters({
-    padding: theme.spacing.unit,
-    margin: theme.spacing.unit * 5
+    padding: theme.spacing(),
+    margin: theme.spacing(5),
   }),
   title: {
-    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
-    color: theme.palette.openTitle
-  }
-})
+    margin: `${theme.spacing(4)}px 0 ${theme.spacing(2)}px`,
+    color: theme.palette.openTitle,
+  },
+});
 
 class Users extends React.Component<IProps, IState> {
   state = {
-      users: []
-  }
+    users: [],
+  };
 
   componentDidMount() {
     UserApiService.list().then((data) => {
       if (data && data.error) {
-        console.log(data.error)
+        console.log(data.error);
       } else {
-        this.setState({users: data})
+        this.setState({ users: data });
       }
-    })
+    });
   }
 
   render() {
@@ -57,33 +57,34 @@ class Users extends React.Component<IProps, IState> {
     return (
       <Page>
         <Paper className={classes.root} elevation={4}>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant='h6' className={classes.title}>
             All Users
           </Typography>
           <List dense>
-          {this.state.users.map((item, i) => {
-            return <Link href={"/profile/" + item._id} key={i}>
-                      <ListItem button>
-                        <ListItemAvatar>
-                          <Avatar>
-                            <Person/>
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary={item.name}/>
-                        <ListItemSecondaryAction>
-                        <IconButton>
-                            <ArrowForward />
-                        </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                  </Link>
-                })
-              }
+            {this.state.users.map((item, i) => {
+              return (
+                <Link href={'/profile/' + item._id} key={i}>
+                  <ListItem button>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <Person />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={item.name} />
+                    <ListItemSecondaryAction>
+                      <IconButton>
+                        <ArrowForward />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </Link>
+              );
+            })}
           </List>
         </Paper>
       </Page>
-    )
+    );
   }
 }
 
-export default withStyles(styles)(Users)
+export default withStyles(styles)(Users);

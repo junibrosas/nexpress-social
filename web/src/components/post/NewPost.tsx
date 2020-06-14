@@ -32,12 +32,12 @@ interface IState {
 const styles = (theme) => ({
   root: {
     backgroundColor: '#efefef',
-    padding: `${theme.spacing.unit * 3}px 0px 1px`,
+    padding: `${theme.spacing(3)}px 0px 1px`,
   },
   card: {
     maxWidth: 600,
     margin: 'auto',
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
     backgroundColor: 'rgba(65, 150, 136, 0.09)',
     boxShadow: 'none',
   },
@@ -58,12 +58,12 @@ const styles = (theme) => ({
     display: 'none',
   },
   textField: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
     width: '90%',
   },
   submit: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing(2),
   },
   filename: {
     verticalAlign: 'super',
