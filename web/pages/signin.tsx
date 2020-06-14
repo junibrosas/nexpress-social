@@ -25,48 +25,47 @@ interface IProps {
   location: any;
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   card: {
     maxWidth: 600,
     margin: 'auto',
     textAlign: 'center',
-    marginTop: theme.spacing.unit * 5,
-    paddingBottom: theme.spacing.unit * 2
+    marginTop: theme.spacing(5),
+    paddingBottom: theme.spacing(2),
   },
   error: {
-    verticalAlign: 'middle'
+    verticalAlign: 'middle',
   },
   title: {
-    marginTop: theme.spacing.unit * 2,
-    color: theme.palette.openTitle
+    marginTop: theme.spacing(2),
+    color: theme.palette.openTitle,
   },
   textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 300
+    marginLeft: theme.spacing(),
+    marginRight: theme.spacing(),
+    width: 300,
   },
   submit: {
     margin: 'auto',
-    marginBottom: theme.spacing.unit * 2
-  }
-})
+    marginBottom: theme.spacing(2),
+  },
+});
 
 class Signin extends React.Component<IProps, IState> {
-
   constructor(props) {
     super(props);
-    
+
     this.state = {
       email: '',
       password: '',
       error: '',
-      redirectToReferrer: false
-    }
+      redirectToReferrer: false,
+    };
   }
 
   render() {
     const { classes } = this.props;
-    const { redirectToReferrer } = this.state
+    const { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) {
       Router.push('/');
@@ -76,46 +75,73 @@ class Signin extends React.Component<IProps, IState> {
       <Page>
         <Card className={classes.card}>
           <CardContent>
-            <Typography variant="h4" className={classes.title}>
+            <Typography variant='h4' className={classes.title}>
               Sign In
-          </Typography>
-            <TextField id="email" type="email" label="Email" className={classes.textField} value={this.state.email} onChange={this.handleChange('email')} margin="normal" /><br />
-            <TextField id="password" type="password" label="Password" className={classes.textField} value={this.state.password} onChange={this.handleChange('password')} margin="normal" />
-            <br /> {
-              this.state.error && (<Typography component="p" color="error">
-                <Icon color="error" className={classes.error}>error</Icon>
+            </Typography>
+            <TextField
+              id='email'
+              type='email'
+              label='Email'
+              className={classes.textField}
+              value={this.state.email}
+              onChange={this.handleChange('email')}
+              margin='normal'
+            />
+            <br />
+            <TextField
+              id='password'
+              type='password'
+              label='Password'
+              className={classes.textField}
+              value={this.state.password}
+              onChange={this.handleChange('password')}
+              margin='normal'
+            />
+            <br />{' '}
+            {this.state.error && (
+              <Typography component='p' color='error'>
+                <Icon color='error' className={classes.error}>
+                  error
+                </Icon>
                 {this.state.error}
-              </Typography>)
-            }
+              </Typography>
+            )}
           </CardContent>
           <CardActions>
-            <Button color="primary" variant="contained" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
+            <Button
+              color='primary'
+              variant='contained'
+              onClick={this.clickSubmit}
+              className={classes.submit}
+            >
+              Submit
+            </Button>
           </CardActions>
         </Card>
       </Page>
-    )
+    );
   }
 
   clickSubmit = () => {
     const user = {
       email: this.state.email || undefined,
-      password: this.state.password || undefined
-    }
+      password: this.state.password || undefined,
+    };
 
     AuthApiService.signin(user).then((data) => {
       if (data && data.error) {
-        this.setState({ error: data.error })
+        this.setState({ error: data.error });
       } else {
         AuthHelper.authenticate(data, () => {
-          this.setState({ redirectToReferrer: true })
-        })
+          this.setState({ redirectToReferrer: true });
+        });
       }
-    })
-  }
+    });
+  };
 
-  handleChange = name => event => {
-    this.setState(({ [name]: event.target.value } as any));
-  }
+  handleChange = (name) => (event) => {
+    this.setState({ [name]: event.target.value } as any);
+  };
 }
 
-export default withStyles((styles as any))(Signin);
+export default withStyles(styles as any)(Signin);

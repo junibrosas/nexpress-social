@@ -1,10 +1,11 @@
 import React from 'react';
-import { 
+import {
   GridList,
   GridListTile,
   Avatar,
   Typography,
-  withStyles } from "@material-ui/core";
+  withStyles,
+} from '@material-ui/core';
 import Link from 'next/link';
 import { UserApiService } from 'src/services/userapi.service';
 
@@ -13,9 +14,9 @@ interface IProps {
   people: any;
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    paddingTop: theme.spacing.unit*2,
+    paddingTop: theme.spacing(2),
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
@@ -25,7 +26,7 @@ const styles = theme => ({
   bigAvatar: {
     width: 60,
     height: 60,
-    margin: 'auto'
+    margin: 'auto',
   },
   gridList: {
     width: 500,
@@ -33,9 +34,9 @@ const styles = theme => ({
   },
   tileText: {
     textAlign: 'center',
-    marginTop: 10
-  }
-})
+    marginTop: 10,
+  },
+});
 
 class FollowGridComponent extends React.Component<IProps, null> {
   render() {
@@ -46,20 +47,25 @@ class FollowGridComponent extends React.Component<IProps, null> {
         <GridList cellHeight={160} className={classes.gridList} cols={4}>
           {people.map((person, i) => {
             return (
-              <GridListTile style={{'height':120}} key={i}>
-                <Link href={"/profile/" + person._id}>
+              <GridListTile style={{ height: 120 }} key={i}>
+                <Link href={'/profile/' + person._id}>
                   <React.Fragment>
-                    <Avatar src={UserApiService.getPhotoUrl(person._id)} className={classes.bigAvatar}/>
-                    <Typography className={classes.tileText}>{person.name}</Typography>
+                    <Avatar
+                      src={UserApiService.getPhotoUrl(person._id)}
+                      className={classes.bigAvatar}
+                    />
+                    <Typography className={classes.tileText}>
+                      {person.name}
+                    </Typography>
                   </React.Fragment>
                 </Link>
               </GridListTile>
-            )
+            );
           })}
         </GridList>
       </div>
-    )
+    );
   }
 }
 
-export const FollowGrid = withStyles(styles as any)(FollowGridComponent)
+export const FollowGrid = withStyles(styles as any)(FollowGridComponent);
