@@ -33,7 +33,6 @@
     "next": "^9.4.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-jss": "^8.6.1",
     "redux": "^4.0.1",
     "typescript": "^3.9.5"
   }
