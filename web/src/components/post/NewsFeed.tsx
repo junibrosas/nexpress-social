@@ -13,49 +13,51 @@ interface IState {
   posts: any;
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   card: {
     margin: 'auto',
     paddingTop: 0,
-    paddingBottom: theme.spacing.unit*3
+    paddingBottom: theme.spacing(3),
   },
   title: {
-    padding:`${theme.spacing.unit * 3}px ${theme.spacing.unit * 2.5}px ${theme.spacing.unit * 2}px`,
+    padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(
+      2
+    )}px`,
     color: theme.palette.openTitle,
-    fontSize: '1em'
+    fontSize: '1em',
   },
   media: {
-    minHeight: 330
-  }
-})
+    minHeight: 330,
+  },
+});
 
 class NewsFeedComponent extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
 
     this.state = {
-      posts: []
-    }
+      posts: [],
+    };
   }
 
   render() {
-    const {classes} = this.props
+    const { classes } = this.props;
     return (
       <Card className={classes.card}>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant='h6' className={classes.title}>
           Newsfeed
         </Typography>
-        <Divider/>
-        <NewPost addUpdate={this.addPost}/>
-        <Divider/>
-        <PostList removeUpdate={this.removePost} posts={this.state.posts}/>
+        <Divider />
+        <NewPost addUpdate={this.addPost} />
+        <Divider />
+        <PostList removeUpdate={this.removePost} posts={this.state.posts} />
       </Card>
-    )
+    );
   }
 
   componentDidMount = () => {
     this.loadPosts();
-  }
+  };
 
   loadPosts = () => {
     const jwt = AuthHelper.isAuthenticated();
@@ -69,21 +71,21 @@ class NewsFeedComponent extends React.Component<IProps, IState> {
       } else {
         this.setState({ posts: data });
       }
-    })
-  }
+    });
+  };
 
   addPost = (post) => {
     const updatedPosts = this.state.posts;
     updatedPosts.unshift(post);
     this.setState({ posts: updatedPosts });
-  }
+  };
 
   removePost = (post) => {
     const updatedPosts = this.state.posts;
     const index = updatedPosts.indexOf(post);
     updatedPosts.splice(index, 1);
     this.setState({ posts: updatedPosts });
-  }
+  };
 }
 
 export const NewsFeed = withStyles(styles)(NewsFeedComponent);

@@ -13,7 +13,7 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Divider,
-  Avatar
+  Avatar,
 } from '@material-ui/core';
 
 import { ProfileTabs } from 'src/components/user/ProfileTabs';
@@ -36,23 +36,23 @@ interface IState {
   redirectToSignin: boolean;
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: theme.mixins.gutters({
     maxWidth: 600,
     margin: 'auto',
-    padding: theme.spacing.unit * 3,
-    marginTop: theme.spacing.unit * 5
+    padding: theme.spacing(3),
+    marginTop: theme.spacing(5),
   }),
   title: {
-    margin: `${theme.spacing.unit * 2}px ${theme.spacing.unit}px 0`,
+    margin: `${theme.spacing(2)}px ${theme.spacing()}px 0`,
     color: theme.palette.protectedTitle,
-    fontSize: '1em'
+    fontSize: '1em',
   },
   bigAvatar: {
     width: 60,
     height: 60,
-    margin: 10
-  }
+    margin: 10,
+  },
 });
 
 class ProfileComponent extends React.Component<IProps, IState> {
@@ -67,7 +67,7 @@ class ProfileComponent extends React.Component<IProps, IState> {
       user: undefined,
       redirectToSignin: false,
       following: false,
-      posts: []
+      posts: [],
     };
   }
 
@@ -141,15 +141,15 @@ class ProfileComponent extends React.Component<IProps, IState> {
     );
   }
 
-  init = userId => {
+  init = (userId) => {
     const jwt = AuthHelper.isAuthenticated();
 
     UserApiService.read(
       {
-        userId: userId
+        userId: userId,
       },
       { t: jwt.token }
-    ).then(data => {
+    ).then((data) => {
       console.warn(data);
       if (data.error) {
         Router.push('/signin');
@@ -161,7 +161,7 @@ class ProfileComponent extends React.Component<IProps, IState> {
     });
   };
 
-  componentWillReceiveProps = props => {
+  componentWillReceiveProps = (props) => {
     this.init(props.userId);
   };
 
@@ -169,17 +169,17 @@ class ProfileComponent extends React.Component<IProps, IState> {
     this.init(this.props.userId);
   };
 
-  loadPosts = user => {
+  loadPosts = (user) => {
     const jwt = AuthHelper.isAuthenticated();
 
     PostApiService.listByUser(
       {
-        userId: user
+        userId: user,
       },
       {
-        t: jwt.token
+        t: jwt.token,
       }
-    ).then(data => {
+    ).then((data) => {
       if (data && data.error) {
         console.log(data.error);
       } else {
@@ -188,26 +188,26 @@ class ProfileComponent extends React.Component<IProps, IState> {
     });
   };
 
-  checkFollow = user => {
+  checkFollow = (user) => {
     const jwt = AuthHelper.isAuthenticated();
-    const match = user.followers.find(following => {
+    const match = user.followers.find((following) => {
       return following._id === jwt.user._id;
     });
 
     return match;
   };
 
-  clickFollowButton = callApi => {
+  clickFollowButton = (callApi) => {
     const jwt = AuthHelper.isAuthenticated();
     callApi(
       {
-        userId: jwt.user._id
+        userId: jwt.user._id,
       },
       {
-        t: jwt.token
+        t: jwt.token,
       },
       this.state.user._id
-    ).then(data => {
+    ).then((data) => {
       if (data && data.error) {
         console.log(data.error);
       } else {
@@ -216,7 +216,7 @@ class ProfileComponent extends React.Component<IProps, IState> {
     });
   };
 
-  removePost = post => {
+  removePost = (post) => {
     const updatedPosts = this.state.posts;
     const index = updatedPosts.indexOf(post);
     updatedPosts.splice(index, 1);
