@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
 import Edit from '@material-ui/icons/Edit';
 import Router from 'next/router';
 import Link from 'next/link';
@@ -15,6 +14,7 @@ import {
   Divider,
   Avatar,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { ProfileTabs } from 'src/components/user/ProfileTabs';
 import { FollowProfileButton } from 'src/components/user/FollowProfileButton';
@@ -24,19 +24,7 @@ import { UserApiService } from 'src/services/userapi.service';
 import { PostApiService } from 'src/services/postapi.service';
 import { Page } from 'src/components/common/Page';
 
-interface IProps {
-  userId: string;
-  classes: any;
-}
-
-interface IState {
-  user: any;
-  following: boolean;
-  posts: any;
-  redirectToSignin: boolean;
-}
-
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
     maxWidth: 600,
     margin: 'auto',
@@ -45,7 +33,6 @@ const styles = (theme) => ({
   }),
   title: {
     margin: `${theme.spacing(2)}px ${theme.spacing()}px 0`,
-    color: theme.palette.protectedTitle,
     fontSize: '1em',
   },
   bigAvatar: {
@@ -53,123 +40,41 @@ const styles = (theme) => ({
     height: 60,
     margin: 10,
   },
-});
+}));
 
-class ProfileComponent extends React.Component<IProps, IState> {
-  static getInitialProps(context) {
-    return { userId: context.query.userId };
+type ComponentProps = {
+  classes: any;
+  userId: string;
+};
+
+type ComponentState = {
+  user: any; // TODO: add proper typing
+  redirectToSignin: boolean;
+  following: boolean;
+  posts: any; // TODO: add proper typing
+};
+
+const ProfileComponent = ({ userId }: ComponentProps) => {
+  const classes = useStyles();
+  const [state, setState] = React.useState<ComponentState | null>({
+    user: undefined,
+    redirectToSignin: false,
+    following: false,
+    posts: [],
+  });
+
+  const redirectToSignin = state.redirectToSignin;
+
+  const photoUrl =
+    state.user && state.user._id
+      ? UserApiService.getPhotoUrl(state.user._id)
+      : UserApiService.getDefaultPhotoUrl();
+
+  if (redirectToSignin) {
+    return Router.push('/signin');
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: undefined,
-      redirectToSignin: false,
-      following: false,
-      posts: [],
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-    const redirectToSignin = this.state.redirectToSignin;
-    const photoUrl =
-      this.state.user && this.state.user._id
-        ? UserApiService.getPhotoUrl(this.state.user._id)
-        : UserApiService.getDefaultPhotoUrl();
-
-    if (redirectToSignin) {
-      return Router.push('/signin');
-    }
-
-    return (
-      <Page>
-        <Paper className={classes.root} elevation={4}>
-          <Typography variant='h6' className={classes.title}>
-            Profile
-          </Typography>
-          {this.state.user && (
-            <React.Fragment>
-              <List dense>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Avatar src={photoUrl} className={classes.bigAvatar} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={this.state.user.name}
-                    secondary={this.state.user.email}
-                  />{' '}
-                  {AuthHelper.isAuthenticated().user &&
-                  AuthHelper.isAuthenticated().user._id ==
-                    this.state.user._id ? (
-                    <ListItemSecondaryAction>
-                      <Link href={'/profile/edit/' + this.state.user._id}>
-                        <IconButton aria-label='Edit' color='primary'>
-                          <Edit />
-                        </IconButton>
-                      </Link>
-                      <DeleteUser userId={this.state.user._id} />
-                    </ListItemSecondaryAction>
-                  ) : (
-                    <FollowProfileButton
-                      following={this.state.following}
-                      onButtonClick={this.clickFollowButton}
-                    />
-                  )}
-                </ListItem>
-                <Divider />
-                <ListItem>
-                  <ListItemText
-                    primary={this.state.user.about}
-                    secondary={
-                      'Joined: ' +
-                      new Date(this.state.user.created).toDateString()
-                    }
-                  />
-                </ListItem>
-              </List>
-              <ProfileTabs
-                user={this.state.user}
-                posts={this.state.posts}
-                removePostUpdate={this.removePost}
-              />
-            </React.Fragment>
-          )}
-        </Paper>
-      </Page>
-    );
-  }
-
-  init = (userId) => {
-    const jwt = AuthHelper.isAuthenticated();
-
-    UserApiService.read(
-      {
-        userId: userId,
-      },
-      { t: jwt.token }
-    ).then((data) => {
-      console.warn(data);
-      if (data.error) {
-        Router.push('/signin');
-      } else {
-        let following = this.checkFollow(data);
-        this.setState({ user: data, following: following });
-        this.loadPosts(data._id);
-      }
-    });
-  };
-
-  componentWillReceiveProps = (props) => {
-    this.init(props.userId);
-  };
-
-  componentDidMount = () => {
-    this.init(this.props.userId);
-  };
-
-  loadPosts = (user) => {
+  const loadPosts = (user) => {
     const jwt = AuthHelper.isAuthenticated();
 
     PostApiService.listByUser(
@@ -183,12 +88,12 @@ class ProfileComponent extends React.Component<IProps, IState> {
       if (data && data.error) {
         console.log(data.error);
       } else {
-        this.setState({ posts: data });
+        setState({ ...state, posts: data });
       }
     });
   };
 
-  checkFollow = (user) => {
+  const checkFollow = (user) => {
     const jwt = AuthHelper.isAuthenticated();
     const match = user.followers.find((following) => {
       return following._id === jwt.user._id;
@@ -197,7 +102,7 @@ class ProfileComponent extends React.Component<IProps, IState> {
     return match;
   };
 
-  clickFollowButton = (callApi) => {
+  const clickFollowButton = (callApi) => {
     const jwt = AuthHelper.isAuthenticated();
     callApi(
       {
@@ -211,17 +116,92 @@ class ProfileComponent extends React.Component<IProps, IState> {
       if (data && data.error) {
         console.log(data.error);
       } else {
-        this.setState({ user: data, following: !this.state.following });
+        setState({ ...state, user: data, following: !state.following });
       }
     });
   };
 
-  removePost = (post) => {
+  const removePost = (post) => {
     const updatedPosts = this.state.posts;
     const index = updatedPosts.indexOf(post);
     updatedPosts.splice(index, 1);
-    this.setState({ posts: updatedPosts });
+    setState({ ...state, posts: updatedPosts });
   };
-}
 
-export default withStyles(styles)(ProfileComponent);
+  React.useEffect(() => {
+    const jwt = AuthHelper.isAuthenticated();
+
+    UserApiService.read(
+      {
+        userId: userId,
+      },
+      { t: jwt.token }
+    ).then((data) => {
+      console.warn(data);
+      if (data.error) {
+        Router.push('/signin');
+      } else {
+        let following = checkFollow(data);
+        setState({ ...state, user: data, following: following });
+        loadPosts(data._id);
+      }
+    });
+  }, [userId]);
+
+  return (
+    <Page>
+      <Paper className={classes.root} elevation={4}>
+        <Typography variant='h6' className={classes.title}>
+          Profile
+        </Typography>
+        {state.user && (
+          <React.Fragment>
+            <List dense>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar src={photoUrl} className={classes.bigAvatar} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={state.user.name}
+                  secondary={state.user.email}
+                />{' '}
+                {AuthHelper.isAuthenticated().user &&
+                AuthHelper.isAuthenticated().user._id == state.user._id ? (
+                  <ListItemSecondaryAction>
+                    <Link href={'/profile/edit/' + state.user._id}>
+                      <IconButton aria-label='Edit' color='primary'>
+                        <Edit />
+                      </IconButton>
+                    </Link>
+                    <DeleteUser userId={state.user._id} />
+                  </ListItemSecondaryAction>
+                ) : (
+                  <FollowProfileButton
+                    following={state.following}
+                    onButtonClick={clickFollowButton}
+                  />
+                )}
+              </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText
+                  primary={state.user.about}
+                  secondary={
+                    'Joined: ' + new Date(state.user.created).toDateString()
+                  }
+                />
+              </ListItem>
+            </List>
+            <ProfileTabs
+              user={state.user}
+              posts={state.posts}
+              removePostUpdate={removePost}
+            />
+          </React.Fragment>
+        )}
+      </Paper>
+    </Page>
+  );
+};
+
+export default ProfileComponent;
