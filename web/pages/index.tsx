@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -11,14 +11,6 @@ import { AuthHelper } from 'src/helpers/auth.helper';
 import { Page } from 'src/components/common/Page';
 import { NewsFeed } from 'src/components/post/NewsFeed';
 import { FindPeople } from 'src/components/user/FindPeople';
-
-interface IProps {
-  classes: any;
-}
-
-interface IState {
-  defaultPage: boolean;
-}
 
 const styles = (theme) => ({
   root: {
@@ -41,73 +33,55 @@ const styles = (theme) => ({
   },
 });
 
-class Home extends Component<IProps, IState> {
-  constructor(props) {
-    super(props);
+const Home = ({ classes }) => {
+  const [defaultPage, setDefaultPage] = React.useState(true);
 
-    this.state = {
-      defaultPage: true,
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Page>
-        <div className={classes.root}>
-          {this.state.defaultPage && (
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
-                <Card className={classes.card}>
-                  <Typography variant='h2' className={classes.title}>
-                    Get A Social Life
-                  </Typography>
-                  <CardMedia
-                    className={classes.media}
-                    image={'/public/images/people-connect.jpg'}
-                    title='Unicorn Shells'
-                  />
-                  <CardContent>
-                    <Typography variant='body1' component='p'>
-                      Nexpress helps you connect and share with the people in
-                      your life.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            </Grid>
-          )}
-          {!this.state.defaultPage && (
-            <Grid container spacing={4}>
-              <Grid item xs={8} sm={7}>
-                <NewsFeed />
-              </Grid>
-              <Grid item xs={6} sm={5}>
-                <FindPeople />
-              </Grid>
-            </Grid>
-          )}
-        </div>
-      </Page>
-    );
-  }
-
-  componentWillReceiveProps = () => {
-    this.init();
-  };
-
-  componentDidMount = () => {
-    this.init();
-  };
-
-  init = () => {
+  React.useEffect(() => {
     if (AuthHelper.isAuthenticated()) {
-      this.setState({ defaultPage: false });
+      setDefaultPage(false);
     } else {
-      this.setState({ defaultPage: true });
+      setDefaultPage(true);
     }
-  };
-}
+  });
+
+  return (
+    <Page>
+      <div className={classes.root}>
+        {defaultPage && (
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <Card className={classes.card}>
+                <Typography variant='h2' className={classes.title}>
+                  Get A Social Life
+                </Typography>
+                <CardMedia
+                  className={classes.media}
+                  image={'/public/images/people-connect.jpg'}
+                  title='Unicorn Shells'
+                />
+                <CardContent>
+                  <Typography variant='body1' component='p'>
+                    Nexpress helps you connect and share with the people in your
+                    life.
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        )}
+        {!defaultPage && (
+          <Grid container spacing={4}>
+            <Grid item xs={8} sm={7}>
+              <NewsFeed />
+            </Grid>
+            <Grid item xs={6} sm={5}>
+              <FindPeople />
+            </Grid>
+          </Grid>
+        )}
+      </div>
+    </Page>
+  );
+};
 
 export default withStyles(styles)(Home);
