@@ -33,16 +33,21 @@ const styles = (theme) => ({
   },
 });
 
-const Home = ({ classes }) => {
+type ComponentProps = {
+  classes: any;
+};
+
+const Home = ({ classes }: ComponentProps) => {
   const [defaultPage, setDefaultPage] = React.useState(true);
+  const isAuthenticated = AuthHelper.isAuthenticated();
 
   React.useEffect(() => {
-    if (AuthHelper.isAuthenticated()) {
+    if (isAuthenticated) {
       setDefaultPage(false);
     } else {
       setDefaultPage(true);
     }
-  });
+  }, [isAuthenticated]);
 
   return (
     <Page>

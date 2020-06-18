@@ -46,21 +46,31 @@ const MenuComponent = (props) => {
   };
 
   const renderMenu = () => (
-    <Menu
-      id='material-appbar'
-      anchorEl={menuAnchorEl}
-      open={Boolean(menuAnchorEl)}
-      onClose={handleMenuClose}
-    >
-      <MenuItem
-        onClick={() => '/profile/' + AuthHelper.isAuthenticated().user._id}
+    <>
+      <IconButton
+        aria-owns={isMenuOpen ? 'material-appbar' : undefined}
+        aria-haspopup='true'
+        onClick={handleProfileMenuOpen}
+        color='inherit'
       >
-        My Profile
-      </MenuItem>
-      <MenuItem onClick={() => AuthHelper.signout(() => Router.push('/'))}>
-        Sign out
-      </MenuItem>
-    </Menu>
+        <AccountCircle />
+      </IconButton>
+      <Menu
+        id='material-appbar'
+        anchorEl={menuAnchorEl}
+        open={Boolean(menuAnchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem
+          onClick={() => '/profile/' + AuthHelper.isAuthenticated().user._id}
+        >
+          My Profile
+        </MenuItem>
+        <MenuItem onClick={() => AuthHelper.signout(() => Router.push('/'))}>
+          Sign out
+        </MenuItem>
+      </Menu>
+    </>
   );
 
   return (
@@ -87,17 +97,9 @@ const MenuComponent = (props) => {
                 </Link>
               </span>
             )}
-            <IconButton
-              aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-              aria-haspopup='true'
-              onClick={handleProfileMenuOpen}
-              color='inherit'
-            >
-              <AccountCircle />
-            </IconButton>
           </div>
+          {AuthHelper.isAuthenticated() && renderMenu()}
         </Toolbar>
-        {AuthHelper.isAuthenticated() && renderMenu()}
       </Container>
     </AppBar>
   );
