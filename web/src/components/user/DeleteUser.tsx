@@ -28,10 +28,6 @@ const DeleteUser = (props: ComponentProps) => {
     open: false,
   });
 
-  React.useEffect(() => {
-    Router.push('/');
-  }, [state.redirect]);
-
   const clickButton = () => {
     setState({ ...state, open: true });
   };
@@ -48,7 +44,8 @@ const DeleteUser = (props: ComponentProps) => {
         console.log(data.error);
       } else {
         AuthHelper.signout(() => console.log('deleted'));
-        setState({ ...state, redirect: true });
+        setState({ ...state });
+        Router.push('/');
       }
     });
   };

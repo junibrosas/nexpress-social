@@ -134,6 +134,7 @@ const Profile = ({ userId }: ComponentProps) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const user = await fetchUserProfile();
+
       if (user.error) {
         Router.push('/signin');
       } else {
