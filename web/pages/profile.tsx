@@ -54,7 +54,7 @@ type ComponentState = {
   posts: any; // TODO: add proper typing
 };
 
-const ProfileComponent = ({ userId }: ComponentProps) => {
+const Profile = ({ userId }: ComponentProps) => {
   const classes = useStyles();
   const [state, setState] = React.useState<ComponentState | null>({
     user: undefined,
@@ -74,23 +74,26 @@ const ProfileComponent = ({ userId }: ComponentProps) => {
     return Router.push('/signin');
   }
 
-  const loadPosts = (user) => {
+  const fetchPosts = async (user) => {
     const jwt = AuthHelper.isAuthenticated();
-
-    PostApiService.listByUser(
+    return PostApiService.listByUser(
       {
         userId: user,
       },
       {
         t: jwt.token,
       }
-    ).then((data) => {
-      if (data && data.error) {
-        console.log(data.error);
-      } else {
-        setState({ ...state, posts: data });
-      }
-    });
+    );
+  };
+
+  const fetchUserProfile = async () => {
+    const jwt = AuthHelper.isAuthenticated();
+    return UserApiService.read(
+      {
+        userId: userId,
+      },
+      { t: jwt.token }
+    );
   };
 
   const checkFollow = (user) => {
@@ -129,23 +132,18 @@ const ProfileComponent = ({ userId }: ComponentProps) => {
   };
 
   React.useEffect(() => {
-    const jwt = AuthHelper.isAuthenticated();
-
-    UserApiService.read(
-      {
-        userId: userId,
-      },
-      { t: jwt.token }
-    ).then((data) => {
-      console.warn(data);
-      if (data.error) {
+    const fetchData = async () => {
+      const user = await fetchUserProfile();
+      if (user.error) {
         Router.push('/signin');
       } else {
-        let following = checkFollow(data);
-        setState({ ...state, user: data, following: following });
-        loadPosts(data._id);
+        const following = checkFollow(user);
+        const posts = await fetchPosts(user._id);
+        setState({ ...state, user, following, posts });
       }
-    });
+    };
+
+    fetchData();
   }, [userId]);
 
   return (
@@ -204,4 +202,8 @@ const ProfileComponent = ({ userId }: ComponentProps) => {
   );
 };
 
-export default ProfileComponent;
+Profile.getInitialProps = (context) => {
+  return { userId: context.query.userId };
+};
+
+export default Profile;
