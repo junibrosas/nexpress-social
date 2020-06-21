@@ -22,7 +22,7 @@ const ProfileTabs = (props: ComponentProps) => {
 
   React.useEffect(() => {
     setState({ ...state, tab: 0 });
-  });
+  }, []);
 
   const handleTabChange = (_, value) => {
     setState({ ...state, tab: value });
