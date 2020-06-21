@@ -11,25 +11,21 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Router from 'next/router';
 
 import { UserApiService } from 'src/services/userapi.service';
 import { Page } from 'src/components/common/Page';
 
-interface IProps {
-  classes: any;
-}
-
-interface IState {
+type ComponentState = {
   name: string;
   password: string;
   email: string;
   open: boolean;
   error: string;
-}
+};
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: 600,
     margin: 'auto',
@@ -42,7 +38,6 @@ const styles = (theme) => ({
   },
   title: {
     marginTop: theme.spacing(2),
-    color: theme.palette.openTitle,
   },
   textField: {
     marginLeft: theme.spacing(),
@@ -53,125 +48,118 @@ const styles = (theme) => ({
     margin: 'auto',
     marginBottom: theme.spacing(2),
   },
-});
+}));
 
-class Signup extends React.Component<IProps, IState> {
-  constructor(props) {
-    super(props);
+const Signup = () => {
+  const classes = useStyles();
+  const [state, setState] = React.useState<ComponentState>({
+    name: '',
+    password: '',
+    email: '',
+    open: false,
+    error: '',
+  });
 
-    this.state = {
-      name: '',
-      password: '',
-      email: '',
-      open: false,
-      error: '',
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Page>
-        <Card className={classes.card}>
-          <CardContent>
-            <Typography variant='h2' className={classes.title}>
-              Sign Up
-            </Typography>
-            <TextField
-              id='name'
-              label='Name'
-              className={classes.textField}
-              value={this.state.name}
-              onChange={this.handleChange('name')}
-              margin='normal'
-            />
-            <br />
-            <TextField
-              id='email'
-              type='email'
-              label='Email'
-              className={classes.textField}
-              value={this.state.email}
-              onChange={this.handleChange('email')}
-              margin='normal'
-            />
-            <br />
-            <TextField
-              id='password'
-              type='password'
-              label='Password'
-              className={classes.textField}
-              value={this.state.password}
-              onChange={this.handleChange('password')}
-              margin='normal'
-            />
-            <br />{' '}
-            {this.state.error && (
-              <Typography component='p' color='error'>
-                <Icon color='error' className={classes.error}>
-                  error
-                </Icon>
-                {this.state.error}
-              </Typography>
-            )}
-          </CardContent>
-          <CardActions>
-            <Button
-              color='primary'
-              variant='contained'
-              onClick={this.clickSubmit}
-              className={classes.submit}
-            >
-              Submit
-            </Button>
-          </CardActions>
-        </Card>
-        <Dialog open={this.state.open} disableBackdropClick={true}>
-          <DialogTitle>New Account</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              New account successfully created.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              color='primary'
-              autoFocus={true}
-              variant='contained'
-              onClick={this.handleSignIn}
-            >
-              Sign In
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Page>
-    );
-  }
-
-  handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value } as any);
+  const handleChange = (name) => (event) => {
+    setState({ [name]: event.target.value } as any);
   };
 
-  handleSignIn = () => {
+  const handleSignIn = () => {
     Router.push('/');
   };
 
-  clickSubmit = () => {
+  const clickSubmit = () => {
     const user = {
-      name: this.state.name || undefined,
-      email: this.state.email || undefined,
-      password: this.state.password || undefined,
+      name: state.name || undefined,
+      email: state.email || undefined,
+      password: state.password || undefined,
     };
 
     UserApiService.create(user).then((data) => {
       if (data && data.error) {
-        this.setState({ error: data.error });
+        setState({ ...state, error: data.error });
       } else {
-        this.setState({ error: '', open: true });
+        setState({ ...state, error: '', open: true });
       }
     });
   };
-}
 
-export default withStyles(styles as any)(Signup);
+  return (
+    <Page>
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography variant='h2' className={classes.title}>
+            Sign Up
+          </Typography>
+          <TextField
+            id='name'
+            label='Name'
+            className={classes.textField}
+            value={state.name}
+            onChange={handleChange('name')}
+            margin='normal'
+          />
+          <br />
+          <TextField
+            id='email'
+            type='email'
+            label='Email'
+            className={classes.textField}
+            value={state.email}
+            onChange={handleChange('email')}
+            margin='normal'
+          />
+          <br />
+          <TextField
+            id='password'
+            type='password'
+            label='Password'
+            className={classes.textField}
+            value={state.password}
+            onChange={handleChange('password')}
+            margin='normal'
+          />
+          <br />{' '}
+          {state.error && (
+            <Typography component='p' color='error'>
+              <Icon color='error' className={classes.error}>
+                error
+              </Icon>
+              {state.error}
+            </Typography>
+          )}
+        </CardContent>
+        <CardActions>
+          <Button
+            color='primary'
+            variant='contained'
+            onClick={clickSubmit}
+            className={classes.submit}
+          >
+            Submit
+          </Button>
+        </CardActions>
+      </Card>
+      <Dialog open={state.open} disableBackdropClick={true}>
+        <DialogTitle>New Account</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            New account successfully created.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color='primary'
+            autoFocus={true}
+            variant='contained'
+            onClick={handleSignIn}
+          >
+            Sign In
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Page>
+  );
+};
+
+export default Signup;
