@@ -11,24 +11,20 @@ import {
   Avatar,
   IconButton,
   Button,
-  withStyles,
+  makeStyles,
 } from '@material-ui/core';
 import ViewIcon from '@material-ui/icons/Visibility';
 import Link from 'next/link';
 import { UserApiService } from 'src/services/userapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
 
-interface IProps {
-  classes: any;
-}
-
-interface IState {
+type ComponentState = {
   users: any;
   open: boolean;
   followMessage: string;
-}
+};
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
     padding: theme.spacing(),
     margin: 0,
@@ -50,81 +46,17 @@ const styles = (theme) => ({
   viewButton: {
     verticalAlign: 'middle',
   },
-});
+}));
 
-class FindPeopleComponent extends React.Component<IProps, IState> {
-  constructor(props) {
-    super(props);
+const FindPeople = () => {
+  const classes = useStyles();
+  const [state, setState] = React.useState<ComponentState | null>({
+    users: [],
+    open: false,
+    followMessage: '',
+  });
 
-    this.state = {
-      users: [],
-      open: false,
-      followMessage: '',
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div>
-        <Paper className={classes.root} elevation={4}>
-          <Typography variant='h6' className={classes.title}>
-            Who to follow
-          </Typography>
-          <List>
-            {this.state.users.map((item, i) => {
-              return (
-                <span key={i}>
-                  <ListItem>
-                    <ListItemAvatar className={classes.avatar}>
-                      <Avatar src={UserApiService.getPhotoUrl(item._id)} />
-                    </ListItemAvatar>
-                    <ListItemText primary={item.name} />
-                    <ListItemSecondaryAction className={classes.follow}>
-                      <Link
-                        as={`/profile/${item._id}`}
-                        href={'/profile?userId=' + item._id}
-                      >
-                        <IconButton
-                          color='secondary'
-                          className={classes.viewButton}
-                        >
-                          <ViewIcon />
-                        </IconButton>
-                      </Link>
-                      <Button
-                        aria-label='Follow'
-                        variant='contained'
-                        color='primary'
-                        onClick={this.clickFollow.bind(this, item, i)}
-                      >
-                        Follow
-                      </Button>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </span>
-              );
-            })}
-          </List>
-        </Paper>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
-          }}
-          open={this.state.open}
-          onClose={this.handleRequestClose}
-          autoHideDuration={6000}
-          message={
-            <span className={classes.snack}>{this.state.followMessage}</span>
-          }
-        />
-      </div>
-    );
-  }
-
-  componentDidMount = () => {
+  React.useEffect(() => {
     const jwt = AuthHelper.isAuthenticated();
 
     UserApiService.findPeople({ userId: jwt.user._id }, { t: jwt.token }).then(
@@ -132,13 +64,13 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
         if (data && data.error) {
           console.log(data.error);
         } else {
-          this.setState({ users: data });
+          setState({ ...state, users: data });
         }
       }
     );
-  };
+  }, []);
 
-  clickFollow = (user, index) => {
+  const clickFollow = (user, index) => {
     const jwt = AuthHelper.isAuthenticated();
 
     UserApiService.follow(
@@ -149,10 +81,10 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
       if (data && data.error) {
         console.log(data.error);
       } else {
-        let toFollow = this.state.users;
+        let toFollow = state.users;
         toFollow.splice(index, 1);
 
-        this.setState({
+        setState({
           users: toFollow,
           open: true,
           followMessage: `Following ${user.name}!`,
@@ -161,9 +93,64 @@ class FindPeopleComponent extends React.Component<IProps, IState> {
     });
   };
 
-  handleRequestClose = () => {
-    this.setState({ open: false });
+  const handleRequestClose = () => {
+    setState({ ...state, open: false });
   };
-}
 
-export const FindPeople = withStyles(styles)(FindPeopleComponent);
+  return (
+    <div>
+      <Paper className={classes.root} elevation={4}>
+        <Typography variant='h6' className={classes.title}>
+          Who to follow
+        </Typography>
+        <List>
+          {state.users.map((item, i) => {
+            return (
+              <span key={i}>
+                <ListItem>
+                  <ListItemAvatar className={classes.avatar}>
+                    <Avatar src={UserApiService.getPhotoUrl(item._id)} />
+                  </ListItemAvatar>
+                  <ListItemText primary={item.name} />
+                  <ListItemSecondaryAction className={classes.follow}>
+                    <Link
+                      as={`/profile/${item._id}`}
+                      href={'/profile?userId=' + item._id}
+                    >
+                      <IconButton
+                        color='secondary'
+                        className={classes.viewButton}
+                      >
+                        <ViewIcon />
+                      </IconButton>
+                    </Link>
+                    <Button
+                      aria-label='Follow'
+                      variant='contained'
+                      color='primary'
+                      onClick={clickFollow.bind(this, item, i)}
+                    >
+                      Follow
+                    </Button>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </span>
+            );
+          })}
+        </List>
+      </Paper>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={state.open}
+        onClose={handleRequestClose}
+        autoHideDuration={6000}
+        message={<span className={classes.snack}>{state.followMessage}</span>}
+      />
+    </div>
+  );
+};
+
+export default FindPeople;
