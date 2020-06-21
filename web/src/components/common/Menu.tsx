@@ -45,6 +45,14 @@ const MenuComponent = (props) => {
     setAnchorEl(null);
   };
 
+  const handleViewProfile = () => {
+    Router.push('/profile/' + AuthHelper.isAuthenticated().user._id);
+  };
+
+  const handleSignout = () => {
+    AuthHelper.signout(() => Router.push('/'));
+  };
+
   const renderMenu = () => (
     <>
       <IconButton
@@ -61,14 +69,8 @@ const MenuComponent = (props) => {
         open={Boolean(menuAnchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem
-          onClick={() => '/profile/' + AuthHelper.isAuthenticated().user._id}
-        >
-          My Profile
-        </MenuItem>
-        <MenuItem onClick={() => AuthHelper.signout(() => Router.push('/'))}>
-          Sign out
-        </MenuItem>
+        <MenuItem onClick={handleViewProfile}>My Profile</MenuItem>
+        <MenuItem onClick={handleSignout}>Sign out</MenuItem>
       </Menu>
     </>
   );
