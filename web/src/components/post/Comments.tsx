@@ -1,24 +1,23 @@
 import React from 'react';
 import { CardHeader, TextField, Avatar, Icon } from '@material-ui/core';
-
+import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
+
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { PostApiService } from 'src/services/postapi.service';
-import { withStyles } from '@material-ui/core';
 import { UserApiService } from 'src/services/userapi.service';
 
-interface IProps {
-  classes: any;
+type ComponentProps = {
   postId: any;
   comments: any;
   updateComments: any;
-}
+};
 
-interface IState {
+type ComponentState = {
   text: string;
-}
+};
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   cardHeader: {
     paddingTop: theme.spacing(),
     paddingBottom: theme.spacing(),
@@ -45,88 +44,17 @@ const styles = (theme) => ({
     verticalAlign: 'middle',
     cursor: 'pointer',
   },
-});
+}));
 
-class CommentsComponent extends React.Component<IProps, IState> {
-  constructor(props) {
-    super(props);
+const Comments = (props: ComponentProps) => {
+  const classes = useStyles();
+  const [state, setState] = React.useState<ComponentState | null>({ text: '' });
 
-    this.state = { text: '' };
-  }
-
-  render() {
-    const { classes } = this.props;
-    const commentBody = (item) => {
-      return (
-        <p className={classes.commentText}>
-          <Link href={'/profile/' + item.postedBy._id}>
-            {item.postedBy.name}
-          </Link>
-          <br />
-          {item.text}
-          <span className={classes.commentDate}>
-            {new Date(item.created).toDateString()} |
-            {AuthHelper.isAuthenticated().user._id === item.postedBy._id && (
-              <Icon
-                onClick={this.deleteComment(item)}
-                className={classes.commentDelete}
-              >
-                delete
-              </Icon>
-            )}
-          </span>
-        </p>
-      );
-    };
-
-    return (
-      <div>
-        <CardHeader
-          avatar={
-            <Avatar
-              className={classes.smallAvatar}
-              src={UserApiService.getPhotoUrl(
-                AuthHelper.isAuthenticated().user._id
-              )}
-            />
-          }
-          title={
-            <TextField
-              onKeyDown={this.addComment}
-              multiline
-              value={this.state.text}
-              onChange={this.handleChange('text')}
-              placeholder='Write something ...'
-              className={classes.commentField}
-              margin='normal'
-            />
-          }
-          className={classes.cardHeader}
-        />
-        {this.props.comments.map((item, i) => {
-          return (
-            <CardHeader
-              avatar={
-                <Avatar
-                  className={classes.smallAvatar}
-                  src={UserApiService.getPhotoUrl(item.postedBy._id)}
-                />
-              }
-              title={commentBody(item)}
-              className={classes.cardHeader}
-              key={i}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-
-  handleChange = (name) => (event) => {
-    this.setState({ [name]: event.target.value } as any);
+  const handleChange = (name) => (event) => {
+    setState({ [name]: event.target.value } as any);
   };
 
-  addComment = (event) => {
+  const addComment = (event) => {
     if (event.keyCode == 13 && event.target.value) {
       event.preventDefault();
       const jwt = AuthHelper.isAuthenticated();
@@ -137,20 +65,20 @@ class CommentsComponent extends React.Component<IProps, IState> {
         {
           t: jwt.token,
         },
-        this.props.postId,
-        { text: this.state.text }
+        props.postId,
+        { text: state.text }
       ).then((data) => {
         if (data && data.error) {
           console.log(data.error);
         } else {
-          this.setState({ text: '' });
-          this.props.updateComments(data.comments);
+          setState({ text: '' });
+          props.updateComments(data.comments);
         }
       });
     }
   };
 
-  deleteComment = (comment) => () => {
+  const deleteComment = (comment) => () => {
     const jwt = AuthHelper.isAuthenticated();
     PostApiService.uncomment(
       {
@@ -159,16 +87,79 @@ class CommentsComponent extends React.Component<IProps, IState> {
       {
         t: jwt.token,
       },
-      this.props.postId,
+      props.postId,
       comment
     ).then((data) => {
       if (data && data.error) {
         console.log(data.error);
       } else {
-        this.props.updateComments(data.comments);
+        props.updateComments(data.comments);
       }
     });
   };
-}
 
-export const Comments = withStyles(styles)(CommentsComponent);
+  const commentBody = (item) => {
+    return (
+      <p className={classes.commentText}>
+        <Link href={'/profile/' + item.postedBy._id}>{item.postedBy.name}</Link>
+        <br />
+        {item.text}
+        <span className={classes.commentDate}>
+          {new Date(item.created).toDateString()} |
+          {AuthHelper.isAuthenticated().user._id === item.postedBy._id && (
+            <Icon
+              onClick={deleteComment(item)}
+              className={classes.commentDelete}
+            >
+              delete
+            </Icon>
+          )}
+        </span>
+      </p>
+    );
+  };
+
+  return (
+    <div>
+      <CardHeader
+        avatar={
+          <Avatar
+            className={classes.smallAvatar}
+            src={UserApiService.getPhotoUrl(
+              AuthHelper.isAuthenticated().user._id
+            )}
+          />
+        }
+        title={
+          <TextField
+            onKeyDown={addComment}
+            multiline
+            value={state.text}
+            onChange={handleChange('text')}
+            placeholder='Write something ...'
+            className={classes.commentField}
+            margin='normal'
+          />
+        }
+        className={classes.cardHeader}
+      />
+      {props.comments.map((item, i) => {
+        return (
+          <CardHeader
+            avatar={
+              <Avatar
+                className={classes.smallAvatar}
+                src={UserApiService.getPhotoUrl(item.postedBy._id)}
+              />
+            }
+            title={commentBody(item)}
+            className={classes.cardHeader}
+            key={i}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+export default Comments;

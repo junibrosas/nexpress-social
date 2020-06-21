@@ -15,7 +15,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 import { UserApiService } from 'src/services/userapi.service';
-import { Page } from 'src/components/common/Page';
+import Page from 'src/components/common/Page';
 
 type ComponentState = {
   users: any;

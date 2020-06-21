@@ -15,7 +15,7 @@ import Router from 'next/router';
 
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { UserApiService } from 'src/services/userapi.service';
-import { Page } from 'src/components/common/Page';
+import Page from 'src/components/common/Page';
 
 interface IState {
   id: string;

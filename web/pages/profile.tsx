@@ -16,13 +16,13 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { ProfileTabs } from 'src/components/user/ProfileTabs';
-import { FollowProfileButton } from 'src/components/user/FollowProfileButton';
-import { DeleteUser } from 'src/components/user/DeleteUser';
+import ProfileTabs from 'src/components/user/ProfileTabs';
+import FollowProfileButton from 'src/components/user/FollowProfileButton';
+import DeleteUser from 'src/components/user/DeleteUser';
+import Page from 'src/components/common/Page';
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { UserApiService } from 'src/services/userapi.service';
 import { PostApiService } from 'src/services/postapi.service';
-import { Page } from 'src/components/common/Page';
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({

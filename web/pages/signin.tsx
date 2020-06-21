@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core';
 
 import { AuthApiService } from 'src/services/authapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
-import { Page } from 'src/components/common/Page';
+import Page from 'src/components/common/Page';
 
 type ComponentState = {
   email: string;

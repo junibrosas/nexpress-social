@@ -1,20 +1,19 @@
-import React, {Component} from 'react'
-import { Post } from './Post';
+import React from 'react';
+import Post from './Post';
 
-interface IProps {
+interface ComponentProps {
   posts: any;
   removeUpdate: any;
 }
 
-export class PostList extends Component<IProps, null> {
-  render() {
-    return (
-      <div style={{marginTop: '24px'}}>
-        {this.props.posts.map((item, i) => {
-            return <Post post={item} key={i} onRemove={this.props.removeUpdate}/>
-          })
-        }
-      </div>
-    )
-  }
-}
+const PostList = (props: ComponentProps) => {
+  return (
+    <div style={{ marginTop: '24px' }}>
+      {props.posts.map((item, i) => {
+        return <Post post={item} key={i} onRemove={props.removeUpdate} />;
+      })}
+    </div>
+  );
+};
+
+export default PostList;

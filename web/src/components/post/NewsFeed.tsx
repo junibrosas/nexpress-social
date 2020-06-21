@@ -1,19 +1,15 @@
 import React from 'react';
-import { Card, Typography, Divider, withStyles } from '@material-ui/core';
-import { NewPost } from 'src/components/post/NewPost';
+import { Card, Typography, Divider, makeStyles } from '@material-ui/core';
+import NewPost from 'src/components/post/NewPost';
 import { PostApiService } from 'src/services/postapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
-import { PostList } from './PostList';
+import PostList from './PostList';
 
-interface IProps {
-  classes: any;
-}
-
-interface IState {
+type ComponentState = {
   posts: any;
-}
+};
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     margin: 'auto',
     paddingTop: 0,
@@ -29,37 +25,15 @@ const styles = (theme) => ({
   media: {
     minHeight: 330,
   },
-});
+}));
 
-class NewsFeedComponent extends React.Component<IProps, IState> {
-  constructor(props) {
-    super(props);
+const NewsFeed = () => {
+  const classes = useStyles();
+  const [state, setState] = React.useState<ComponentState>({
+    posts: [],
+  });
 
-    this.state = {
-      posts: [],
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <Card className={classes.card}>
-        <Typography variant='h6' className={classes.title}>
-          Newsfeed
-        </Typography>
-        <Divider />
-        <NewPost addUpdate={this.addPost} />
-        <Divider />
-        <PostList removeUpdate={this.removePost} posts={this.state.posts} />
-      </Card>
-    );
-  }
-
-  componentDidMount = () => {
-    this.loadPosts();
-  };
-
-  loadPosts = () => {
+  const loadPosts = () => {
     const jwt = AuthHelper.isAuthenticated();
 
     PostApiService.listNewsFeed(
@@ -69,23 +43,39 @@ class NewsFeedComponent extends React.Component<IProps, IState> {
       if (data && data.error) {
         console.log(data.error);
       } else {
-        this.setState({ posts: data });
+        setState({ posts: data });
       }
     });
   };
 
-  addPost = (post) => {
-    const updatedPosts = this.state.posts;
+  React.useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const addPost = (post) => {
+    const updatedPosts = state.posts;
     updatedPosts.unshift(post);
-    this.setState({ posts: updatedPosts });
+    setState({ posts: updatedPosts });
   };
 
-  removePost = (post) => {
-    const updatedPosts = this.state.posts;
+  const removePost = (post) => {
+    const updatedPosts = state.posts;
     const index = updatedPosts.indexOf(post);
     updatedPosts.splice(index, 1);
-    this.setState({ posts: updatedPosts });
+    setState({ posts: updatedPosts });
   };
-}
 
-export const NewsFeed = withStyles(styles)(NewsFeedComponent);
+  return (
+    <Card className={classes.card}>
+      <Typography variant='h6' className={classes.title}>
+        Newsfeed
+      </Typography>
+      <Divider />
+      <NewPost addUpdate={addPost} />
+      <Divider />
+      <PostList removeUpdate={removePost} posts={state.posts} />
+    </Card>
+  );
+};
+
+export default NewsFeed;

@@ -15,7 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Router from 'next/router';
 
 import { UserApiService } from 'src/services/userapi.service';
-import { Page } from 'src/components/common/Page';
+import Page from 'src/components/common/Page';
 
 type ComponentState = {
   name: string;
