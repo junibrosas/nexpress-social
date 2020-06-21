@@ -1,5 +1,4 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core';
 import {
   Card,
   CardHeader,
@@ -16,20 +15,20 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { PostApiService } from 'src/services/postapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { UserApiService } from 'src/services/userapi.service';
+import { makeStyles } from '@material-ui/core/styles';
 
-interface IProps {
-  classes: any;
+type ComponentProps = {
   addUpdate: (post: any) => void;
-}
+};
 
-interface IState {
+type ComponentState = {
   text: string;
   photo: any;
   error: string;
   user: any;
-}
+};
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#efefef',
     padding: `${theme.spacing(3)}px 0px 1px`,
@@ -68,116 +67,105 @@ const styles = (theme) => ({
   filename: {
     verticalAlign: 'super',
   },
-});
+}));
 
-class NewPostComponent extends React.Component<IProps, IState> {
-  postData: FormData;
+const NewPost = (props: ComponentProps) => {
+  const classes = useStyles();
+  const [postData, setPostData] = React.useState<FormData>(undefined);
+  const [state, setState] = React.useState<ComponentState>({
+    text: '',
+    photo: '',
+    error: '',
+    user: {},
+  });
 
-  constructor(props) {
-    super(props);
+  React.useEffect(() => {
+    const formData = new FormData();
+    setPostData(formData);
+    setState({ ...state, user: AuthHelper.isAuthenticated().user });
+  }, []);
 
-    this.state = {
-      text: '',
-      photo: '',
-      error: '',
-      user: {},
-    };
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <Card className={classes.card}>
-          <CardHeader
-            avatar={
-              <Avatar src={UserApiService.getPhotoUrl(this.state.user._id)} />
-            }
-            title={this.state.user.name}
-            className={classes.cardHeader}
-          />
-          <CardContent className={classes.cardContent}>
-            <TextField
-              placeholder='Share your thoughts ...'
-              multiline
-              rows='3'
-              value={this.state.text}
-              onChange={this.handleChange('text')}
-              className={classes.textField}
-              margin='normal'
-            />
-            <input
-              accept='image/*'
-              onChange={this.handleChange('photo')}
-              className={classes.input}
-              id='icon-button-file'
-              type='file'
-            />
-            <label htmlFor='icon-button-file'>
-              <IconButton
-                color='secondary'
-                className={classes.photoButton}
-                component='span'
-              >
-                <PhotoCamera />
-              </IconButton>
-            </label>{' '}
-            <span className={classes.filename}>
-              {this.state.photo ? this.state.photo.name : ''}
-            </span>
-            {this.state.error && (
-              <Typography component='p' color='error'>
-                <Icon color='error' className={classes.error}>
-                  error
-                </Icon>
-                {this.state.error}
-              </Typography>
-            )}
-          </CardContent>
-          <CardActions>
-            <Button
-              color='primary'
-              variant='contained'
-              disabled={this.state.text === ''}
-              onClick={this.clickPost}
-              className={classes.submit}
-            >
-              POST
-            </Button>
-          </CardActions>
-        </Card>
-      </div>
-    );
-  }
-
-  componentDidMount() {
-    this.postData = new FormData();
-    this.setState({ user: AuthHelper.isAuthenticated().user });
-  }
-
-  handleChange = (name) => (event) => {
+  const handleChange = (name) => (event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value;
-    this.postData.set(name, value);
-    this.setState({ [name]: value } as any);
+    postData.set(name, value);
+    setState({ ...state, [name]: value } as any);
   };
 
-  clickPost = async () => {
+  const clickPost = async () => {
     const jwt = AuthHelper.isAuthenticated();
 
     const data = await PostApiService.create(
       { userId: jwt.user._id },
       { t: jwt.token },
-      this.postData
+      postData
     );
 
     if (data && data.error) {
-      this.setState({ error: data.error });
+      setState({ ...state, error: data.error });
     } else {
-      this.setState({ text: '', photo: '' });
-      this.props.addUpdate(data);
+      setState({ ...state, text: '', photo: '' });
+      props.addUpdate(data);
     }
   };
-}
 
-export const NewPost = withStyles(styles)(NewPostComponent);
+  return (
+    <div className={classes.root}>
+      <Card className={classes.card}>
+        <CardHeader
+          avatar={<Avatar src={UserApiService.getPhotoUrl(state.user._id)} />}
+          title={state.user.name}
+          className={classes.cardHeader}
+        />
+        <CardContent className={classes.cardContent}>
+          <TextField
+            placeholder='Share your thoughts ...'
+            multiline
+            rows='3'
+            value={state.text}
+            onChange={handleChange('text')}
+            className={classes.textField}
+            margin='normal'
+          />
+          <input
+            accept='image/*'
+            onChange={handleChange('photo')}
+            className={classes.input}
+            id='icon-button-file'
+            type='file'
+          />
+          <label htmlFor='icon-button-file'>
+            <IconButton
+              color='secondary'
+              className={classes.photoButton}
+              component='span'
+            >
+              <PhotoCamera />
+            </IconButton>
+          </label>{' '}
+          <span className={classes.filename}>
+            {state.photo ? state.photo.name : ''}
+          </span>
+          {state.error && (
+            <Typography component='p' color='error'>
+              <Icon color='error'>error</Icon>
+              {state.error}
+            </Typography>
+          )}
+        </CardContent>
+        <CardActions>
+          <Button
+            color='primary'
+            variant='contained'
+            disabled={state.text === ''}
+            onClick={clickPost}
+            className={classes.submit}
+          >
+            POST
+          </Button>
+        </CardActions>
+      </Card>
+    </div>
+  );
+};
+
+export default NewPost;

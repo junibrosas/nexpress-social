@@ -8,9 +8,9 @@ import {
   Grid,
 } from '@material-ui/core';
 import { AuthHelper } from 'src/helpers/auth.helper';
-import { Page } from 'src/components/common/Page';
-import { NewsFeed } from 'src/components/post/NewsFeed';
-import { FindPeople } from 'src/components/user/FindPeople';
+import Page from 'src/components/common/Page';
+import NewsFeed from 'src/components/post/NewsFeed';
+import FindPeople from 'src/components/user/FindPeople';
 
 const styles = (theme) => ({
   root: {

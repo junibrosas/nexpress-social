@@ -1,7 +1,7 @@
 import React from 'react';
 import Menu from 'src/components/common/Menu';
 
-const PageComponent = (props) => {
+const Page = (props) => {
   return (
     <React.Fragment>
       <Menu />
@@ -10,4 +10,4 @@ const PageComponent = (props) => {
   );
 };
 
-export const Page = PageComponent;
+export default Page;
