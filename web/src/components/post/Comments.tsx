@@ -51,7 +51,7 @@ const Comments = (props: ComponentProps) => {
   const [state, setState] = React.useState<ComponentState | null>({ text: '' });
 
   const handleChange = (name) => (event) => {
-    setState({ [name]: event.target.value } as any);
+    setState({ ...state, [name]: event.target.value } as any);
   };
 
   const addComment = (event) => {

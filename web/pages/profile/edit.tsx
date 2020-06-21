@@ -138,7 +138,7 @@ class EditProfileComponent extends Component<IProps, IState> {
   handleChange = (name) => (event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value;
     this.userData.set(name, value);
-    this.setState({ [name]: value } as any);
+    this.setState({ ...state, [name]: value } as any);
   };
   render() {
     const { classes } = this.props;

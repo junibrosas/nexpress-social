@@ -15,7 +15,6 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { PostApiService } from 'src/services/postapi.service';
 import { AuthHelper } from 'src/helpers/auth.helper';
 import { UserApiService } from 'src/services/userapi.service';
-
 import { makeStyles } from '@material-ui/core/styles';
 
 type ComponentProps = {
@@ -72,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NewPost = (props: ComponentProps) => {
   const classes = useStyles();
+  const [postData, setPostData] = React.useState<FormData>(undefined);
   const [state, setState] = React.useState<ComponentState>({
     text: '',
     photo: '',
@@ -79,17 +79,16 @@ const NewPost = (props: ComponentProps) => {
     user: {},
   });
 
-  let postData: FormData;
-
   React.useEffect(() => {
-    postData = new FormData();
+    const formData = new FormData();
+    setPostData(formData);
     setState({ ...state, user: AuthHelper.isAuthenticated().user });
   }, []);
 
   const handleChange = (name) => (event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value;
     postData.set(name, value);
-    setState({ [name]: value } as any);
+    setState({ ...state, [name]: value } as any);
   };
 
   const clickPost = async () => {
