@@ -31,7 +31,7 @@
     "formidable": "^1.2.1",
     "helmet": "^3.16.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mongoose": "^5.7.5",
     "webpack": "^4.30.0"
   }
