@@ -17,7 +17,7 @@
     "dotenv": "^8.0.0",
     "file-loader": "^3.0.1",
     "nodemon": "^1.19.0",
-    "webpack-cli": "^3.3.1",
+    "webpack-cli": "^3.3.12",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
